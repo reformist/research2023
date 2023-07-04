@@ -1,13 +1,14 @@
 This is the README file of the LINCS project and will be updated on a weekly basis.
 
-General Tips:
-Slice a few columns of the dataframe to manipulate before using the entire dataframe.
-Use lambda x to run operations.
+
 
 Week 1:
 Initial foray into LINCS. Learning about the data. Learned how to download the data.
 Created first module (biologically coherent set of genes) based off Z-score of level 5 data.
 Calculated its Mutual Information.
+General Tips I've learned:
+Slice a few columns of the dataframe to manipulate before using the entire dataframe.
+Use lambda x to run operations.
 
 Week 2:
 Began looking into MPS scores and understanding KM curves. Mutual information in itself does not carry a lot of information as it is from 0 to 
@@ -45,7 +46,7 @@ To sign my mutual information, I find the Pearson correlation between gene expre
 today, created functions up to MPS with new data from firebrowse. runs pretty smoothly. now need to read in survival data
 
 Thursday: 
-Today has been a pretty heavy shit fest. Spent a long time creating functions for the past two days just having to change a lot due to transitioning to gene symbol to check work with Balaji. should have just started with this.
+Spent a long time creating functions for the past two days just having to change a lot due to transitioning to gene symbol to check work with Balaji. should have just started with this.
 made a new file with just my functions
 going to start importing my functions from another file just to clean up my jupyter notebook since it's kind of hellish having to scroll past everything over and over again   
 Action Items: Need to figure out the gene differences
@@ -60,7 +61,7 @@ Friday: should make my functions general, so I can just preprocess data myself. 
 Saturday: unsighed MI matches
 Sunday: just got off the call with Balaji. Need to think about a few things: need to save every coding file I create to make sure I can go back and see what I've been doing. learned about another way to randomize modules. what do I want to do in the lab by beginning of September.
 
-New Week
+Week 3
 Monday: narrwoed it down to MI. my MI calculation is off. I don't know why. has to do with module inclusion, I believe. should be 109 genes instead of 112?
 Figured it out. Needed to use common genes that Balaji provided to filter 109 genes out of 112.
 
@@ -74,4 +75,9 @@ Friday: trying to calculate hazard ratio. will try to figure out level 3 to leve
 
 Saturday/Sunday: break
 
+Week 4
+So far this week, finished verifying how the level 3 to level 4 and level 4 to level 5 data is transformed. Now that I understand the LINCS data, I can use it to create modules which I can input into my MPS functions and see if the KM curves are significant.
+
 Monday: converting between level 4 and level 5 data. some values in the metadata like "ABY001_A375_XH:ADO-TRASTUZUMAB_EMTANSINE:5:24" just doesn't exist in the level 5 or level 4 data.
+
+Tuesday: figuring out how to clone repositories and how to constantly save my files on GitHub
