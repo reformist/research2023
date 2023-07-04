@@ -1,11 +1,17 @@
 
 
+"""
+Process RNA-seq data with thresholding, log2, and z-score across axis = 1 (genes).
+df: the initial dataframe with genes for rows and patients for columns
+threshold: the percentile you want to cut off for std and mean. (10 percentile means top 90% genes in std and mean are selected)   
+"""
+
 
 def preProcessing1(df, threshold = 10):
     import pandas as pd
     import numpy as np
     import pandas as pd
-    
+
            
     # df = pd.DataFrame(df)
     # df = df.drop(index = 0)
@@ -315,8 +321,117 @@ def calcMPS(allMI, nullMIScores, df, moduleDF, moduleNum = 0):
     
     return val
 
+"""
+Function that writes a dataframe to a csv file.
+dataframe: dataframe to write to file
+filename: name of the file  
+"""
+
 def write_dataframe_to_csv(dataframe, filename):
     import csv
 
     dataframe.to_csv(filename, index=False)
 
+
+""" 
+Function to plot MPS positive and MPS negative curve.
+df: dataframe with survival data and/or MPS data
+MPS: MPS column of information in the dataframe
+event: whether the patient died or not, represented with 1, 0
+time: the time the patient was involved in the study
+patientID: the id of the patients from the MPS differentiation
+"""
+
+def MPSStratification(df, MPS, event, time, patientID):
+    
+    MPS_Scores_Positive = df[df[MPS].apply(lambda x: x > 0)]
+    MPS_Scores_Negative = df[df[MPS].apply(lambda x: x < 0)]
+
+    print(len(MPS_Scores_Positive))
+    print(len(MPS_Scores_Negative))
+
+    patient_IDs_positive = MPS_Scores_Positive[patientID].tolist()
+    patient_IDs_negative = MPS_Scores_Negative[patientID].tolist()
+
+    survival_data_2_pos = df[df[patientID].isin(patient_IDs_positive)]
+    survival_data_2_neg = df[df[patientID].isin(patient_IDs_negative)]
+
+    kmf_pos = KaplanMeierFitter()
+    kmf_neg = KaplanMeierFitter()
+    kmf_pos.fit(durations=survival_data_2_pos[time], event_observed=survival_data_2_pos[event], label="MPS Positive")
+    kmf_neg.fit(durations=survival_data_2_neg[time], event_observed=survival_data_2_neg[event], label='MPS Negative')
+    ax = kmf_pos.plot(show_censors=True)
+    ax = kmf_neg.plot(ax=ax, show_censors=True)
+
+    # Perform Cox Hazard Ratio test
+    cph = CoxPHFitter()
+    editDF = pd.concat([MPS_Scores_Positive, MPS_Scores_Negative])
+    
+    print(editDF)
+
+    cph.fit(editDF[[time, event, MPS]], duration_col=time, event_col=event) # takes into account all of the MPS, want only the MPS_Scores_Positive and MPS_Scores_Negative
+    hazard_ratio = cph.hazard_ratios_[MPS]
+
+    # Perform log-rank test
+    results = logrank_test(survival_data_2_pos[time], survival_data_2_neg[time], survival_data_2_pos[event],
+                           survival_data_2_neg[event])
+    p_value = results.p_value
+
+    # Print the p-value and hazard ratio
+    ax.annotate('p-value: {:.4f}'.format(p_value), xy=(0.1, 0.3), xycoords='axes fraction', fontsize=12)
+    ax.annotate('Hazard Ratio: {:.2f}'.format(hazard_ratio), xy=(0, 0.1), xycoords='axes fraction', fontsize=12)
+
+    # Set the plot labels and title
+    ax.set_xlabel('Months')
+    ax.set_ylabel('Survival Probability')
+    ax.set_title('Survival Curves')
+
+
+# def MPSStratification(df, MPS, event, time, patientID):
+#     MPS_Scores_Positive = df[df[MPS].apply(lambda x : x > 0)]
+#     MPS_Scores_Negative = df[df[MPS].apply(lambda x : x < 0)]
+
+#     print(len(MPS_Scores_Positive))
+#     print(len(MPS_Scores_Negative))
+
+#     patient_IDs_positive = MPS_Scores_Positive[patientID].tolist()
+#     patient_IDs_negative = MPS_Scores_Negative[patientID].tolist()
+
+#     survival_data_2_pos = df[df[patientID].isin(patient_IDs_positive)]
+#     survival_data_2_neg = df[df[patientID].isin(patient_IDs_negative)]
+
+#     print(survival_data_2_pos)
+#     print(survival_data_2_neg)
+
+#     kmf_pos = KaplanMeierFitter()
+#     kmf_neg = KaplanMeierFitter()
+#     kmf_pos.fit(durations = survival_data_2_pos[time], event_observed = survival_data_2_pos[event], label = "MPS Positive")
+#     kmf_neg.fit(durations = survival_data_2_neg[time], event_observed = survival_data_2_neg[event], label = 'MPS Negative')
+#     ax = kmf_pos.plot(show_censors = True)
+#     ax = kmf_neg.plot(ax = ax, show_censors = True)
+
+#     #Perform Cox Hazard Ratio test
+    
+#     cph = CoxPHFitter()
+#     print(survival_data_2_neg)
+#     print(survival_data_2_pos)
+#     cph.fit(pd.concat([MPS_Scores_Positive, MPS_Scores_Negative]), duration_col=time, event_col=event)
+#     hazard_ratio = cph.hazard_ratios_[MPS]
+
+
+    
+
+#     # Perform log-rank test
+#     results = logrank_test(survival_data_2_pos[time], survival_data_2_neg[time], survival_data_2_pos[event], survival_data_2_neg[event])
+#     p_value = results.p_value
+
+#     # Print the p-value and hazard ratio
+#     ax.annotate('p-value: {:.4f}'.format(p_value), xy=(0.1, 0.3), xycoords='axes fraction', fontsize=12)
+#     ax.annotate('Hazard Ratio: {:.2f}'.format(hazard_ratio), xy=(0, 0.1), xycoords='axes fraction', fontsize=12)
+
+#     # Set the plot labels and title
+#     ax.set_xlabel('Time')
+#     ax.set_ylabel('Survival Probability')
+#     ax.set_title('Survival Curves')
+
+#     plt.show()
