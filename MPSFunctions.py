@@ -182,7 +182,7 @@ int marginalDistribution2: probability of event b | a
 @return int: a single value of mutualInformation calculation
 """
 def mutualInformation(jointDistribution, marginalDistribution1, marginalDistribution2):
-    return jointDistribution * math.log(jointDistribution /((marginalDistribution1 * marginalDistribution2) +0.000000000000000000001)+0.00000000000000000000000001)
+    return jointDistribution * math.log(jointDistribution /((marginalDistribution1 * marginalDistribution2) +0.00000000000000000000000001)+0.00000000000000000000000001)
 
 possibleBins = [1,2,3,4,5,6,7,8,9,10]
 possibleInclusion = [0,1]
@@ -435,3 +435,73 @@ def MPSStratification(df, MPS, event, time, patientID):
 #     ax.set_title('Survival Curves')
 
 #     plt.show()
+"""  
+Function to calculate differentialExpression between level 3 and level 4 data of LINCS
+df: the dataframe to apply the operation to
+returns calculated level 4 data
+"""
+
+def differentialExpression(df):
+    mad_func = lambda x: np.median(np.abs(x - np.median(x)))
+
+    mad_values = df.apply(mad_func, axis = 1)
+
+    denom = 1.4826 * mad_values
+
+    denom = list(denom)
+
+    # for i in range(len(denom)):
+    #     if denom[i] ==0:
+    #         denom[i] = 0.1
+
+
+    median_values = df.median(axis = "columns")
+
+    numerator = df.subtract(median_values, axis = "index")
+
+    next_result = numerator.divide(denom, axis = "index")
+
+    return next_result
+
+
+"""  
+way to check level 3 to level 4 data
+"""
+
+corrList = []
+anotherCorrList = []
+for idx in range(len(combine.columns)):
+    x = combine.iloc[idx,:]
+    y = combine.iloc[idx,:]
+
+    combine = pd.concat([x,y], axis = 1)
+    combine.replace([np.inf, -np.inf], np.nan, inplace=True)
+    combine = combine.dropna(axis = 0)
+    x= combine.iloc[:,0]
+    y = combine.iloc[:,1]
+    
+    matrix = np.corrcoef(x,y) #ABY001_SUDHL4_XH_X1_B15
+    corrList.append(matrix[0][1])
+    r, p = stats.pearsonr(x, y)
+    anotherCorrList.append(r)
+
+    
+
+
+def dictCreation(key, value):
+    idToSymbol = zip(key, value) # zip creates a dictionary between gene id and the gene symbol
+    idToSymbol = list(idToSymbol)
+    idToSymbol = dict(idToSymbol)
+
+    return idToSymbol
+
+def iteratingThroughDict(key, dictionary):
+
+    map_list = []
+    # int_first_module = list(map(int, first_module)) # fastest way to convert string to integer
+    for i in key: # the column with entrez id in raw_gene_exp file
+        for key in dictionary:
+            if i == key:
+                map_list.append(dictionary[key])
+
+    return map_list

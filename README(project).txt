@@ -81,3 +81,5 @@ So far this week, finished verifying how the level 3 to level 4 and level 4 to l
 Monday: converting between level 4 and level 5 data. some values in the metadata like "ABY001_A375_XH:ADO-TRASTUZUMAB_EMTANSINE:5:24" just doesn't exist in the level 5 or level 4 data.
 
 Tuesday: figuring out how to clone repositories and how to constantly save my files on GitHub
+
+Wednesday: working on isolating drug and doing z-score stuff
