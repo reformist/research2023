@@ -83,3 +83,5 @@ Monday: converting between level 4 and level 5 data. some values in the metadata
 Tuesday: figuring out how to clone repositories and how to constantly save my files on GitHub
 
 Wednesday: working on isolating drug and doing z-score stuff
+
+Thursday: identify differentially expressed genes. deciding to use ishiq and qc_pass as filters. disregarding plates and instead using data as I think the authors intended (their z-scores as relativeg gene expression, but it's a little strange)
