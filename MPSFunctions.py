@@ -505,3 +505,33 @@ def iteratingThroughDict(key, dictionary):
                 map_list.append(dictionary[key])
 
     return map_list
+
+"""  
+Scatterplot grapher that does a lot of useful operations such as correlatios, line of best fit
+x = first column of info
+y = second column of info (must match type and length of x)
+title: the name of the graph, if inputted
+"""
+
+def graphScatter(x, y, title = ""):
+    
+    plt.axhline(0, color='black', linestyle='-')
+    plt.axvline(0, color='black', linestyle='-')
+    plt.scatter(x, y, s= 10, alpha = 0.05)
+
+    corr = np.corrcoef(x, y)[0, 1]
+    plt.text(0.75, 0.95, f'Correlation: {corr:.2f}', ha='center', va='top', transform=plt.gca().transAxes)
+    m, b = np.polyfit(x, y, deg=1)
+    plt.plot(x, m*x + b, color='red')
+
+    plt.text(0.75, 0.85, f'Slope of Line of Best Fit: {m:.2f}', ha='center', va='top', transform=plt.gca().transAxes)
+    plt.text(0.75, 0.80, f'y-intercept: {b:.2f}', ha='center', va='top', transform=plt.gca().transAxes)
+
+    plt.scatter(x, y, s= 10, alpha = 0.2, color = 'darkblue')
+
+    x = pd.DataFrame(x)
+    y = pd.DataFrame(y)
+    plt.xlabel(f"{x.columns}")
+    plt.ylabel(f"{y.columns}")
+
+    plt.title(f"{title}")
