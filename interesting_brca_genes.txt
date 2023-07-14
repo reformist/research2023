@@ -1,0 +1,10 @@
+Interesting BRCA genes
+TP53    reduction
+BRCA1   difference in expression
+BRCA2   difference in expression
+PIK3CA  mutation
+HER2    amplification
+ESR1    amplification
+ESR2    amplification
+MYC amplification
+DCAF13  amplification
