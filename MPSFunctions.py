@@ -514,6 +514,9 @@ title: the name of the graph, if inputted
 """
 
 def graphScatter(x, y, title = ""):
+
+    plt.rcParams.update({'font.size': 22})
+
     
     plt.axhline(0, color='black', linestyle='-')
     plt.axvline(0, color='black', linestyle='-')
@@ -535,3 +538,52 @@ def graphScatter(x, y, title = ""):
     plt.ylabel(f"{y.columns}")
 
     plt.title(f"{title}")
+    plt.rcParams.update({'font.size': 22})
+
+
+
+def kMeansClustering(pca_df, x = 'PCA1', y = 'PCA2', num_clusters = 3):
+    kmeans=  KMeans(init = "random", n_clusters = num_clusters, n_init = 10, max_iter = 300, random_state = 42)
+    kmeans.fit_predict(pca_df.iloc[:,:2])
+    temp_df = pca_df
+    temp_df['predictions'] = kmeans.labels_
+
+    temp_df['predictions'] = temp_df.predictions.astype('category')
+    ax = sns.scatterplot(x = x, y = y, hue = 'predictions', data = temp_df)
+# should probably create a bar graph function
+
+
+"Takes in dataframe for clustering and returns graph of PCA 1, 2 as well as elbow curve for optimal clusters"
+def preKMeansClustering(df):
+    df_standardized = StandardScaler().fit_transform(df)
+    pca = PCA(n_components = 2)
+    principalComponents = pca.fit_transform(df_standardized)
+    print("Variance for PCA: ", pca.explained_variance_ratio_)
+    
+    pca_df = pd.DataFrame()
+    pca_df['PCA1'] = pca.components_[0]
+    pca_df['PCA2'] = pca.components_[1]
+    print(graphScatter(x=pca_df.iloc[:,0], y= pca_df.iloc[:,1]))
+
+    # elbow curve
+
+    k_values = range(1, 11)
+
+    # Initialize an empty list to store the WCSS values for each cluster number
+    wcss_values = []
+
+    # Iterate over each cluster number and calculate WCSS
+    for k in k_values:
+        kmeans = KMeans(n_clusters=k)
+        kmeans.fit(pca_df)
+        wcss_values.append(kmeans.inertia_)
+
+    # Plot the WCSS values against the number of clusters
+    plt.plot(k_values, wcss_values, marker='o')
+    plt.xlabel('Number of Clusters (k)')
+    plt.ylabel('Within-Cluster Sum of Squares (WCSS)')
+    plt.title('Elbow Method')
+    plt.show()
+
+    return pca_df
+    
