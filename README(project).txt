@@ -97,4 +97,4 @@ Tuesday: clustered 720,000 experiments, then just 120,000 experiments with kmean
 
 Wednesday: focused on learning about iPAGE and interpreting the math behind PCA
 
-Thursday: need to try u-MAP and label what i'm clustering by experiment/drug/cell line
+Thursday: need to try u-MAP and label what i'm clustering by experiment/drug/cell line. figured out how to label on small scale--will try and implement it more. pca isn't doing a great job separating stuff.
