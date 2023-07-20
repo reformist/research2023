@@ -85,3 +85,16 @@ Tuesday: figuring out how to clone repositories and how to constantly save my fi
 Wednesday: working on isolating drug and doing z-score stuff
 
 Thursday: identify differentially expressed genes. deciding to use ishiq and qc_pass as filters. disregarding plates and instead using data as I think the authors intended (their z-scores as relativeg gene expression, but it's a little strange)
+
+Week 5:
+Attended conference for much of the week, missed mon-Thursday
+Friday: Z-scored z-scores of an exemp MCF7 experiment with doxorubicin with 220 controls of DMSO. Plugged genes into GSEA
+
+Week 6:
+Monday: Met with Saeed, need to do a lot more clustering
+
+Tuesday: clustered 720,000 experiments, then just 120,000 experiments with kmeans and PCA reduction. also created a t-SNE plot
+
+Wednesday: focused on learning about iPAGE and interpreting the math behind PCA
+
+Thursday: need to try u-MAP and label what i'm clustering by experiment/drug/cell line
