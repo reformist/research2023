@@ -587,3 +587,30 @@ def preKMeansClustering(df):
 
     return pca_df
     
+
+# plotting graphs with multiple shapes and colors
+
+cell_type_colors = {"A549": "red", "MCF7": "blue"}
+drug_markers = {"doxorubicin": "o", "epirubicin": "s", 'capecitabine' : 'd' , 'epirubicin' : 'x' , 'paclitaxel' : '^'}
+
+fig, ax = plt.subplots()
+
+for (cell_type, drug), group_df in pca_df_transpose.groupby(["cell_line_label", "drug_name"]):
+    color = cell_type_colors[cell_type]
+    marker = drug_markers[drug]
+    ax.scatter(group_df["PCA1"], group_df["PCA2"], c=color, marker=marker, label=f"{cell_type} - {drug}")
+
+# Add legend
+ax.legend()
+
+# Add labels and title
+ax.set_xlabel("PCA1")
+ax.set_ylabel("PCA2")
+ax.set_title("PCA1 vs PCA2 with Cell Type and Drug Differentiation")
+
+#
+legend = ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+
+# Show the plot
+plt.show()
