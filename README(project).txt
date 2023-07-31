@@ -98,3 +98,14 @@ Tuesday: clustered 720,000 experiments, then just 120,000 experiments with kmean
 Wednesday: focused on learning about iPAGE and interpreting the math behind PCA
 
 Thursday: need to try u-MAP and label what i'm clustering by experiment/drug/cell line. figured out how to label on small scale--will try and implement it more. pca isn't doing a great job separating stuff.
+
+
+Week 7:
+Created interesting PCA/uMAP/tSNE diagrams, but no quantitative data
+tried clustering again but instead of clustering on the PCA, I clustered on the data directly, creating heatmaps and hc/heatmaps.
+associated mechanism of action with my dataframe
+
+Week 8
+Pivoting from clustering experiments to cluster groups of genes.
+
+Monday: learning the linux terminal of working of iPAGE. need to try out one experiment
