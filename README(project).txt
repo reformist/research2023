@@ -109,3 +109,4 @@ Week 8
 Pivoting from clustering experiments to cluster groups of genes.
 
 Monday: learning the linux terminal of working of iPAGE. need to try out one experiment
+Tuesday: clustered all perturbations with doxorubicin and ran it through iPAGE with varying cluster sizes of 20, 50, and 100. looked at iPAGE paper to understand it more and tried to think of better clustering metrics to use
