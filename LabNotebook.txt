@@ -1,4 +1,4 @@
-This is the README file of the LINCS project and will be updated on a weekly basis.
+This is the Lab Notebook file of the LINCS project and will be updated on a weekly basis.
 
 
 
@@ -110,3 +110,9 @@ Pivoting from clustering experiments to cluster groups of genes.
 
 Monday: learning the linux terminal of working of iPAGE. need to try out one experiment
 Tuesday: clustered all perturbations with doxorubicin and ran it through iPAGE with varying cluster sizes of 20, 50, and 100. looked at iPAGE paper to understand it more and tried to think of better clustering metrics to use
+
+
+9/8/2023
+First day back after a month break. Reviewed my MI and clustering code to get back up to speed. Thought through some research questions and decided to prepare data for a mutual information calculation based on 1-100 clusters and 
+rsem data, take the significant MI and see if any cluster stratifies patients well. we will see. ready to do mutual information next time
+
